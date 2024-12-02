@@ -1,2 +1,1 @@
-# Ignorer ces fichier
-**/node_modules
+node_modules/

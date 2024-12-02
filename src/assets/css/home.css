@@ -5,7 +5,7 @@
 
 body, html {
     font-family: 'Rubik', sans-serif;
-    background-color: black;
+    background-color: black !important;
     margin: 0;
     padding: 0;
     height: 100vh; /* Assure que le body occupe toute la hauteur de la fenêtre */

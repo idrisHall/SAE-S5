@@ -63,3 +63,19 @@ nav a:hover {
     background-color: #555;
     color: white;
 }
+
+/* Navbar au-dessus de la vidéo */
+nav {
+    position: relative; /* Assurez-vous que la navbar est bien positionnée */
+    z-index: 2; /* Place la navbar au-dessus de la vidéo */
+    background-color: rgba(0, 0, 0, 0.6); /* Optionnel : Fond semi-transparent pour améliorer la lisibilité */
+    color: white;
+    padding: 10px 20px;
+}
+
+/* Conteneur principal */
+.container {
+    position: relative; /* Nécessaire pour le contenu au-dessus de la vidéo */
+    z-index: 1; /* Place le contenu principal au-dessus de la vidéo */
+    color: white; /* Assure que le texte reste lisible */
+}

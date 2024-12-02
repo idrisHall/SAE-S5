@@ -1,6 +1,10 @@
 <template>
 
 <div class="container">
+  <video autoplay muted loop playsinline class="background-video">
+    <source src="../../public/videos/fondLetter.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
     <header class="header">
         <h1 class="title">S'inscrire</h1>
     </header>
@@ -83,4 +87,6 @@ const signInWithGoogle = () => {
 
 <style>
 @import "@/assets/css/auth.css";
+@import "@/assets/css/login.css";
+
 </style>

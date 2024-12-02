@@ -64,7 +64,7 @@ body {
     padding: 3rem 4rem;
     border-radius: 15px;
     margin-bottom: 35vh;
-    border: 1px solid #e07a17;
+    border: 1px solid #FFF;
     box-shadow: 0 0 20px rgba(30, 30, 30, 0.8);
     width: 40%;
     max-width: 600px;
@@ -92,7 +92,7 @@ body {
 }
 
 .error {
-    color: #e07a17;
+    color: #FFF;
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }
@@ -101,7 +101,7 @@ body {
     width: 100%;
     padding: 1.2rem;
     background-color: transparent;
-    border: 2px solid #e07a17;
+    border: 2px solid #FFF;
     border-radius: 30px;
     color: #FFFFFF;
     font-size: 1.5rem;
@@ -111,7 +111,7 @@ body {
 }
 
 .submit-button:hover {
-    background-color: #e07a17;
+    background-color: black;
     color: #FFFFFF;
 }
 
@@ -121,7 +121,7 @@ body {
 }
 
 .login-link a {
-    color: #e07a17;
+    color: #FFF;
     text-decoration: none;
     font-weight: bold;
 }

@@ -1,0 +1,65 @@
+/* Style de la navbar */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Espace entre les sections */
+    background-color: transparent;
+    padding: 10px 20px;
+}
+
+/* Logo et texte */
+nav .logo {
+    display: flex;
+    align-items: center; /* Aligne l'image et le texte verticalement */
+    text-decoration: none; /* Supprime le soulignement du lien */
+}
+
+nav .logo img {
+    width: 70px; /* Taille de l'image */
+    height: auto;
+    cursor: pointer;
+    margin-right: 8px; /* Espace entre l'image et le texte */
+}
+
+nav .logo-text {
+    color: white;
+    font-size: 20px; /* Taille du texte */
+    font-weight: bold; /* Gras pour le texte */
+}
+
+/* Rubriques centrales */
+nav .center-links {
+    display: flex;
+    justify-content: center; /* Centre les rubriques */
+    flex-grow: 1; /* Utilise l'espace entre la gauche (logo) et la droite ("Se connecter") */
+    gap: 100px; /* Espacement entre les rubriques */
+}
+
+/* Style pour les liens */
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Style pour le bouton "Se connecter" */
+nav a.se-connecter {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: auto;
+}
+
+/* Survol des boutons */
+nav a:hover {
+    background-color: #555;
+    color: white;
+}

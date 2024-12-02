@@ -6,7 +6,7 @@
       Your browser does not support the video tag.
     </video>
     <header class="header">
-        <h1 class="title">Se connecter </h1>
+        <h1 class="title">Connexion</h1>
     </header>
     <main class="main-content">
         <div class="form-container">

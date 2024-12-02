@@ -6,7 +6,7 @@
     Your browser does not support the video tag.
   </video>
     <header class="header">
-        <h1 class="title">S'inscrire</h1>
+        <h1 class="title">Inscription</h1>
     </header>
     <main class="main-content">
 

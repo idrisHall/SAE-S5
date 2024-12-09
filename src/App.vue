@@ -3,17 +3,19 @@
     <nav>
       <router-link to="/Home" class="logo">
         <img src="../public/images/Logo.png" alt="Logo" />
-        <span class="logo-text">Approxi’mot</span>
+        <span class="logo-text">Approximot</span>
       </router-link>
-      <!-- Rubriques centrales dans un conteneur -->
+  
       <div class="center-links">
         <router-link to="/Home">Home</router-link>
         <router-link to="/Game">Solo</router-link>
-        <router-link to="/register">Register</router-link>
+        <router-link to="/collaboration">Jouer avec un ami</router-link>
+        <router-link to="/affrontement">Affronter un ami</router-link>
+        <router-link to="/register">S'inscrire</router-link>      
       </div>
 
-      <!-- Lien "Se connecter" isolé à droite -->
-      <router-link to="/login" class="se-connecter">Se connecter</router-link>
+      <button @click="handleSingOut" class="se-connecter" v-if="isLoggedIn">Sign out</button>
+      <router-link to="/login" class="se-connecter" v-if="!isLoggedIn">Se connecter</router-link>
     </nav>
     <router-view />
   </div>

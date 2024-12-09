@@ -4,7 +4,7 @@
     <button @click="checkSimilarity" :disabled="endGame">Vérifier la proximité</button>
     <p>Nombre de tentatives : {{ attemptsCount }}</p>
     <ul>
-      <li v-for="(result, index) in similarityResults" :key="index">
+      <li v-for="(result, index) in sortedSimilarityResults" :key="index">
         {{ result.word1 }} - {{ result.word2 }} : {{ result.similarity.toFixed(4) }}
       </li>
     </ul>
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { checkWordSimilarity } from "@/services/api";
 import { auth, database, ref as firebaseRef, set } from "@/firebase";
 
@@ -31,6 +31,10 @@ const attemptedWords = ref(new Set());
 const attemptsCount = ref(0);
 const errorMessage = ref("");
 const endGame = ref(false);
+
+const sortedSimilarityResults = computed(() => {
+  return [...similarityResults.value].sort((a, b) => b.similarity - a.similarity);
+});
 
 const checkSimilarity = async () => {
   const word = submittedWord.value.trim().toLowerCase();

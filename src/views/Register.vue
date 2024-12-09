@@ -28,7 +28,7 @@
             </form>
             <div class="login-link">
                 <p><button @click="signInWithGoogle">S'incrire avec Google</button></p>
-                <p>Vous avez déjà un compte ? <a href="#">Se connecter</a></p>
+                <p>Vous avez déjà un compte ? <router-link to="/login">Se connecter</router-link></p>
             </div>
         </div>
 

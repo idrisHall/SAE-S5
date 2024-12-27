@@ -42,7 +42,7 @@
       const wordKey = `${new Date().getTime()}`;
       await set(firebaseRef(database, `old-words/${wordKey}`), {
         word: newWord,
-        date: currentDate,
+        timestamp: new Date().getTime(),
       });
     } catch {
       errorMessage.value = "Erreur lors du chargement du mot aléatoire.";

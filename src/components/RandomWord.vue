@@ -23,7 +23,7 @@ const loadRandomWord = async () => {
       const data = snapshot.val();
       const storedWord = data.word;
       const storedTimestamp = data.timestamp;
-      const oneDay = 86400000;
+      const oneDay = 86_400_000;
       if (currentTime - storedTimestamp < oneDay) {
         randomWord.value = storedWord;
         emit("wordGenerated", storedWord);

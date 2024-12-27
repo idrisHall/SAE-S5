@@ -2,7 +2,7 @@
   <div class="container">
     <!-- Vidéo en arrière-plan -->
     <video autoplay muted loop playsinline class="background-video">
-      <source src="../../public/videos/fondLetter.mp4" type="video/mp4" />
+      <source src="/videos/fondLetter.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
     <header class="header">

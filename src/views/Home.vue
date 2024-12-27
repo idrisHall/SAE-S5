@@ -7,19 +7,16 @@
         <h1 style="margin-right: 28%">Devine le mot du jour !</h1>
 
         <div class="bottom-button">
-          <button style="margin-right: 30%" class="btn-custom">J’essaye !</button>
+          <router-link to="/game"><button style="margin-right: 30%" class="btn-custom">J’essaye !</button></router-link>
         </div>
       </div>
 
-      <img src="../../public/images/Subtract.png" alt="Image en bas droite" class="bottom-right-img" />
+      <img src="/images/Subtract.png" alt="Image en bas droite" class="bottom-right-img" />
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Home',
-};
+<script setup>
 </script>
 
 

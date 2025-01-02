@@ -661,26 +661,7 @@ const subscribeToCurrentWord = () => {
 </script>
 
 <style>
-h1 {
-  font-family: Arial, sans-serif;
-  font-size: 1.8em;
-  margin-bottom: 1em;
-}
-button {
-  margin: 0.5em;
-  padding: 0.5em 1em;
-  font-size: 1em;
-}
 
-input {
-  margin: 0.5em 0.2em;
-  padding: 0.5em;
-  font-size: 1em;
-  width: 200px;
-}
+@import '@/assets/css/GameOnline.css';
 
-ul {
-  list-style: none;
-  padding: 0;
-}
 </style>

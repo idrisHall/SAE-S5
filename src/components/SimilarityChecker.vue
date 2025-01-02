@@ -1,23 +1,31 @@
 <template>
   <div>
-    <input v-model="submittedWord" placeholder="Entrez un mot" :disabled="endGame" />
-    <button @click="checkSimilarity" :disabled="endGame">Vérifier la proximité</button>
-    <p>Nombre de tentatives : {{ attemptsCount }}</p>
+    <div class="input-button-group" style="text-align: center">
+      <input style="font-size: 20px;" v-model="submittedWord" placeholder="Entrez un mot" :disabled="endGame"/>
+      <button style="font-size: 20px;" @click="checkSimilarity" :disabled="endGame">Vérifier la proximité</button>
+    </div>
+    <p style="margin-top: -18.5%; margin-left: 63%">Nombre de tentatives : {{ attemptsCount }}</p>
     <ul>
-      <li v-for="(result, index) in similarityResults" :key="index">
-        <span :style="{ color: result.error ? 'red' : 'black' }">
+      <li style="color: #FFF" v-for="(result, index) in similarityResults" :key="index">
+        <span class="resultatMot" @click="showDefinition(result.word1)" :style="{ color: result.error ? 'white' : 'black'}">
           {{ result.message }}
         </span>
       </li>
     </ul>
     <p v-if="endGame" class="success">Vous avez gagné !</p>
   </div>
+
+  <div class="right-section">
+
+  </div>
+
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { checkWordSimilarity, checkWordIdentical } from "@/services/api";
 import { auth, database, ref as firebaseRef, set, get } from "@/firebase";
+import axios from "axios";
 
 const props = defineProps({
   randomWord: {
@@ -60,7 +68,7 @@ const checkSimilarity = async () => {
         word1: word,
         word2: props.randomWord,
         similarity: 1,
-        message: `${word} est identique au mot cible !`,
+        message: `Vous avez trouvé le mot ${props.randomWord} du jour en ${attemptsCount.value} coups ! Cliquez sur les mots pour voir leur définition. `,
         error: false,
       });
       saveGameResult();
@@ -110,7 +118,7 @@ const saveGameResult = async () => {
     const userWordsData = snapshot.val() || {};
 
     const alreadyFound = Object.values(userWordsData).some(
-      (entry) => entry.word === props.randomWord && entry.date === currentDate
+        (entry) => entry.word === props.randomWord && entry.date === currentDate
     );
 
     if (alreadyFound) {
@@ -131,6 +139,70 @@ const saveGameResult = async () => {
     console.error("Erreur lors de la vérification ou de la sauvegarde :", error);
   }
 };
+
+const showDefinition = async (word) => {
+  if (!endGame.value) {
+    return;
+  }
+  if (!word) {
+    alert("Veuillez entrer un mot valide.");
+    return;
+  }
+
+  try {
+    // Appel à l'API Node.js
+    const response = await axios.post('http://localhost:3000/api/definition', { word });
+
+    const data = response.data;
+
+    if (data.error) {
+      alert(`Erreur : ${data.error}`);
+      return;
+    }
+
+    // Construction de la définition
+    let definitionMessage = `Définition de "${data.motWiki}":\n\n`;
+
+    if (data.natureDef && data.natureDef.length > 0) {
+      data.natureDef.forEach((nature, index) => {
+        definitionMessage += `Classe grammaticale ${index + 1}: ${data.nature[index] || "Non spécifiée"}\n`;
+
+        nature.forEach((definitions, defIndex) => {
+          if (Array.isArray(definitions)) {
+            definitions.forEach((subDef, subDefIndex) => {
+              definitionMessage += `  ${index + 1}.${subDefIndex + 1}: ${
+                  typeof subDef === "object" ? JSON.stringify(subDef, null, 2) : subDef
+              }\n`;
+            });
+          } else {
+            definitionMessage += `  ${index + 1}.${defIndex + 1}: ${
+                typeof definitions === "object" ? JSON.stringify(definitions, null, 2) : definitions
+            }\n`;
+          }
+        });
+      });
+    } else {
+      definitionMessage += "Définition indisponible.";
+    }
+
+    // Limite pour éviter une alerte trop longue
+    if (definitionMessage.length > 2000) {
+      console.warn("Le message est trop long pour être affiché dans une alerte.");
+      alert("Le contenu est trop long pour être affiché en entier. Veuillez consulter la console pour plus de détails.");
+      console.log(definitionMessage);
+    } else {
+      alert(definitionMessage);
+    }
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la définition :", error);
+    alert("Une erreur s'est produite. Veuillez réessayer.");
+  }
+};
+
+
+
+
+
 </script>
 
 
@@ -139,4 +211,7 @@ const saveGameResult = async () => {
   color: green;
   font-weight: bold;
 }
+
+@import '@/assets/css/Game.css';
+
 </style>

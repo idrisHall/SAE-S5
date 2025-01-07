@@ -1,0 +1,63 @@
+.input-button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px; /* Espacement entre l'input et le bouton */
+}
+
+.input-button-group input {
+    width: 300px; /* Largeur personnalisée */
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #444; /* Bordure subtile */
+    border-radius: 8px; /* Coins arrondis */
+    background-color: #1a1a1a; /* Fond assorti au reste de la page */
+    color: white; /* Texte blanc */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-button-group input:focus {
+    border-color: #dcce6b; /* Bordure verte au focus */
+    outline: none;
+    box-shadow: 0 0 8px rgba(220, 206, 107, 0.8); /* Lumière verte */
+}
+
+.input-button-group input:disabled {
+    background-color: #333; /* Fond désactivé */
+    color: #777; /* Texte grisé */
+    border-color: #555; /* Bordure désactivée */
+    cursor: not-allowed; /* Curseur interdit */
+}
+
+.verif-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background-color: #dcce6b; /* Vert */
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.verif-button:hover {
+    background-color: #45a049; /* Vert plus foncé */
+    color: white;
+    transform: scale(1.05); /* Effet de zoom */
+}
+
+.verif-button:disabled {
+    background-color: #555; /* Bouton désactivé */
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.resultat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Aligner les enfants en bas */
+    height: 100%; /* S'assurer que le conteneur occupe toute la hauteur */
+    overflow-y: auto; /* Permettre le défilement si nécessaire */
+}

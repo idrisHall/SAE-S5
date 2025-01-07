@@ -1,17 +1,24 @@
 <template>
   <div>
-    <div class="input-button-group" style="text-align: center">
-      <input style="font-size: 20px;" v-model="submittedWord" placeholder="Entrez un mot" :disabled="endGame"/>
-      <button style="font-size: 20px;" @click="checkSimilarity" :disabled="endGame">Vérifier la proximité</button>
+    <div class="input-button-group">
+      <input v-model="submittedWord" placeholder="Entrez un mot" :disabled="endGame"/>
+      <button class="verif-button" @click="checkSimilarity" :disabled="endGame">Vérifier la proximité</button>
     </div>
     <p style="margin-top: -18.5%; margin-left: 63%">Nombre de tentatives : {{ attemptsCount }}</p>
-    <ul>
-      <li style="color: #FFF" v-for="(result, index) in similarityResults" :key="index">
-        <span class="resultatMot" @click="showDefinition(result.word1)" :style="{ color: result.error ? 'white' : 'black'}">
-          {{ result.message }}
-        </span>
-      </li>
-    </ul>
+    <div class="resultat-container">
+      <ul>
+        <li v-for="(result, index) in similarityResults" :key="index">
+      <span
+          class="resultatMot"
+          @click="showDefinition(result.word1)"
+          :style="{ color: result.error ? 'white' : '#dcce6b' }"
+      >
+        {{ result.message }}
+      </span>
+        </li>
+      </ul>
+    </div>
+
     <p v-if="endGame" class="success">Vous avez gagné !</p>
   </div>
 
@@ -206,12 +213,14 @@ const showDefinition = async (word) => {
 </script>
 
 
-<style>
+<style scoped>
+@import '@/assets/css/similarityChecker.css';
+
 .success {
   color: green;
   font-weight: bold;
 }
 
-@import '@/assets/css/Game.css';
+
 
 </style>

@@ -2,7 +2,7 @@
   <div id="app">
     <nav>
       <router-link to="/Home" class="logo">
-        <img src="/images/logo.png" alt="Logo" />
+        <img src="/images/icon_transparent.png" alt="Logo" />
         <span class="logo-text">Approximot</span>
       </router-link>
 

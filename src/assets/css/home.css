@@ -5,7 +5,7 @@
 
 body, html {
     font-family: 'Rubik', sans-serif;
-    background-color: black !important;
+    background-color: #1a1a1a;
     margin: 0;
     padding: 0;
     height: 100vh; /* Assure que le body occupe toute la hauteur de la fenêtre */
@@ -41,17 +41,23 @@ body, html {
 
 /* Style du bouton personnalisé */
 .btn-custom {
-    background-color: #FFF;
+    background-color: #dcce6b;
     color: black;
-    border: none;
     padding: 10px 55px;
-    border-radius: 200px;
+    border-radius: 10px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 25px;
+    border-color: #dcce6b;
+    border-style: solid;
+    transition: all 0.3s ease;
 }
 
 .btn-custom:hover {
-    background-color: #0056b3;
+    background-color: transparent;
+    color: white;
+    border-color: #dcce6b;
+    border-style: solid;
+    transition: all 0.3s ease;
 }
 
 .bottom-right-img {

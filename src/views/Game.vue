@@ -1,23 +1,15 @@
 <template>
-  <div>
-    <video autoplay muted loop playsinline class="background-video">
-      <source src="/videos/fondLetter.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-
-  </div>
     <div class="gray-box">
-<br>
       <p v-if="isConnected && pseudo" class="pseudoGame">Bonjour {{ pseudo }}</p>
       <p v-else-if="isConnected">Bonjour {{ email }}</p>
       <p v-else>Bonjour, vous jouez en mode invité</p>
       <div class="MotBox">
-      <RandomWord @wordGenerated="setRandomWord" />
-
-      <SimilarityChecker
-          :randomWord="randomWord"
-          @resultsUpdated="updateSimilarityResults"
-      />
+        <SimilarityChecker
+            :randomWord="randomWord"
+            @resultsUpdated="updateSimilarityResults"
+        />
+        <br>
+        <RandomWord @wordGenerated="setRandomWord" />
       </div>
       <button
           v-if="isConnected"

@@ -54,10 +54,4 @@
     cursor: not-allowed;
 }
 
-.resultat-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Aligner les enfants en bas */
-    height: 100%; /* S'assurer que le conteneur occupe toute la hauteur */
-    overflow-y: auto; /* Permettre le défilement si nécessaire */
-}
+

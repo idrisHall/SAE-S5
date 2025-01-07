@@ -1,26 +1,50 @@
 <template>
-    <div class="gray-box">
-      <p v-if="isConnected && pseudo" class="pseudoGame">Bonjour {{ pseudo }}</p>
-      <p v-else-if="isConnected">Bonjour {{ email }}</p>
-      <p v-else>Bonjour, vous jouez en mode invité</p>
-      <div class="MotBox">
-        <SimilarityChecker
-            :randomWord="randomWord"
-            @resultsUpdated="updateSimilarityResults"
-        />
-        <br>
-        <RandomWord @wordGenerated="setRandomWord" />
-      </div>
-      <button
-          v-if="isConnected"
-          @click="playWithFriend"
-          class="invite-button"
-      >
-        Jouer avec un ami
-      </button>
-      <br>
+  <div class="gray-box">
+    <p v-if="isConnected && pseudo" class="pseudoGame">Bonjour {{ pseudo }}</p>
+    <p v-else-if="isConnected">Bonjour {{ email }}</p>
+    <p v-else>Bonjour, vous jouez en mode invité</p>
+
+    <!-- Conteneur pour MotBox -->
+    <div class="MotBox">
+      <RandomWord @wordGenerated="setRandomWord" />
+      <SimilarityChecker
+          :randomWord="randomWord"
+          @resultsUpdated="updateSimilarityResults"
+      />
+      <br />
+
     </div>
+
+    <button class="sort-button">
+      Trier : Ordre
+    </button>
+
+    <!-- Conteneur pour les résultats -->
+    <div class="resultatMot-container">
+      <ul>
+        <li v-for="(result, index) in [...similarityResults].reverse()" :key="index">
+          <span
+              class="resultatMot"
+              @click="showDefinition(result.word1)"
+              :class="{ errorResult: result.error, normalResult: !result.error }"
+          >
+            {{ result.message }}
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <button
+        v-if="isConnected"
+        @click="playWithFriend"
+        class="invite-button"
+    >
+      Jouer avec un ami
+    </button>
+    <br />
+  </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted } from "vue";

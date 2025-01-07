@@ -5,19 +5,7 @@
       <button class="verif-button" @click="checkSimilarity" :disabled="endGame">Vérifier la proximité</button>
     </div>
     <p style="margin-top: -18.5%; margin-left: 63%">Nombre de tentatives : {{ attemptsCount }}</p>
-    <div class="resultat-container">
-      <ul>
-        <li v-for="(result, index) in similarityResults" :key="index">
-      <span
-          class="resultatMot"
-          @click="showDefinition(result.word1)"
-          :style="{ color: result.error ? 'white' : '#dcce6b' }"
-      >
-        {{ result.message }}
-      </span>
-        </li>
-      </ul>
-    </div>
+
 
     <p v-if="endGame" class="success">Vous avez gagné !</p>
   </div>

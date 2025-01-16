@@ -1,33 +1,75 @@
 <template>
-  <div>
-    <h1>Lexitom</h1>
+  <div class="gray-box">
+    <h1 class="pseudoGame">Lexitom</h1>
 
-    <div v-if="!sessionId">
-      <input type="radio" value="affrontementrandom" v-model="gameMode" hidden />
-      <button @click="createSession">Créer une session</button>
-      <input v-model="sessionToJoin" placeholder="Entrez un ID de session" />
-      <button @click="joinSession" :disabled="!sessionToJoin.trim()">Rejoindre</button>
+    <div v-if="!sessionId" class="MotBox">
+      <input
+          type="radio"
+          value="affrontementrandom"
+          v-model="gameMode"
+          hidden
+      />
+      <button class="invite-button" @click="createSession">
+        Créer une session
+      </button>
+      <input
+          v-model="sessionToJoin"
+          placeholder="Entrez un ID de session"
+          class="MotBox"
+      />
+      <button
+          class="sort-button"
+          @click="joinSession"
+          :disabled="!sessionToJoin.trim()"
+      >
+        Rejoindre
+      </button>
     </div>
-    <div v-else>
-      <p>ID de session : <strong>{{ sessionId }}</strong></p>
-      <p>Joueurs connectés : {{ connectedPlayers.length }}</p>
-      <p>Mot aléatoire : {{ randomWord }}</p>
-      <p>Nombre total de coups : {{ totalAttempts }}</p>
-      <input v-model="submittedWord" placeholder="Entrez un mot" :disabled="gameEnded || connectedPlayers.length < 2" />
-      <button @click="submitWord" :disabled="gameEnded || connectedPlayers.length < 2">Soumettre</button>
-      <ul>
-        <ul>
-          <li v-for="(player, index) in sortedPlayers" :key="index">
-            <span v-if="player.similarity !== undefined">  {{ player.pseudo }} a soumis "{{ player.word }}" : {{ (player.similarity * 100).toFixed(3)}}°</span>
-            <span v-else style = "color:red">Le mot "{{ player.word }}" n'est pas dans le vocabulaire</span>
-          </li>
-        </ul>
 
+    <div v-else>
+      <p class="MotBox">
+        ID de session : <strong>{{ sessionId }}</strong>
+      </p>
+      <p class="MotBox">Joueurs connectés : {{ connectedPlayers.length }}</p>
+      <p class="MotBox">Mot aléatoire : {{ randomWord }}</p>
+      <p class="MotBox">Nombre total de coups : {{ totalAttempts }}</p>
+      <input
+          v-model="submittedWord"
+          placeholder="Entrez un mot"
+          :disabled="gameEnded || connectedPlayers.length < 2"
+          class="MotBox"
+      />
+      <button
+          class="sort-button"
+          @click="submitWord"
+          :disabled="gameEnded || connectedPlayers.length < 2"
+      >
+        Soumettre
+      </button>
+      <ul class="resultatMot-container">
+        <li v-for="(player, index) in sortedPlayers" :key="index">
+          <span
+              v-if="player.similarity !== undefined"
+              class="resultatMot"
+          >
+            {{ player.pseudo }} a soumis "{{ player.word }}" : {{ (player.similarity * 100).toFixed(3) }}°
+          </span>
+          <span
+              v-else
+              class="resultatMot errorResult"
+              style="color: red"
+          >
+            Le mot "{{ player.word }}" n'est pas dans le vocabulaire
+          </span>
+        </li>
       </ul>
-      <p v-if="gameEnded">{{ win }} Le mot à deviner était "{{ randomWord }}" !</p>
+      <p v-if="gameEnded" class="pseudoGame">
+        {{ win }} Le mot à deviner était "{{ randomWord }}" !
+      </p>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
@@ -150,28 +192,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style>
-h1 {
-  font-family: Arial, sans-serif;
-  font-size: 1.8em;
-  margin-bottom: 1em;
-}
+<style scoped>
+@import '@/assets/css/GameOnlineAffrontement.css';
 
-button {
-  margin: 0.5em;
-  padding: 0.5em 1em;
-  font-size: 1em;
-}
-
-input {
-  margin: 0.5em 0.2em;
-  padding: 0.5em;
-  font-size: 1em;
-  width: 200px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
 </style>

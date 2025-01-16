@@ -1,4 +1,9 @@
 /* Style de la navbar */
+
+body{
+    margin:0;
+}
+
 nav {
     display: flex;
     align-items: center;

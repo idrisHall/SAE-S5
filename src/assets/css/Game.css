@@ -65,31 +65,18 @@ html, body {
 }
 
 .resultatMot-container ul {
-    list-style: none; /* Enlever les puces */
-    padding: 0; /* Retirer l'espacement interne */
-    margin: 0; /* Retirer l'espacement externe */
-    text-align: center; /* Centrer les éléments */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
 }
 
 .resultatMot-container li {
-    margin-bottom: 10px; /* Espacement entre chaque résultat */
-}
-
-.resultatMot {
-    color: white; /* Texte en blanc */
-    font-size: 16px; /* Taille de texte lisible */
-    font-weight: 500; /* Un poids de police équilibré */
-    background-color: #333; /* Fond sombre pour les résultats */
-    padding: 10px; /* Espacement interne */
-    border-radius: 8px; /* Coins arrondis */
-    display: inline-block; /* Empêche les résultats de prendre toute la largeur */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Ajout d'une légère ombre */
-    cursor: pointer; /* Changement de curseur au survol */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Animations douces */
+    margin-bottom: 10px;
 }
 
 .resultatMot-container {
-    max-height: 200px; /* Hauteur maximale pour le conteneur */
+    max-height: 250px; /* Hauteur maximale pour le conteneur */
     overflow-y: auto; /* Ajout d'une barre de défilement si le contenu dépasse */
     margin-top: 20px; /* Espacement entre MotBox et resultatMot-container */
     padding: 10px; /* Espacement interne pour un meilleur rendu */
@@ -115,20 +102,6 @@ html, body {
 
 .resultatMot-container::-webkit-scrollbar-thumb:hover {
     background: #f7e78d; /* Couleur plus claire au survol */
-}
-
-
-.sort-button {
-    margin: 10px 0; /* Espacement entre MotBox et resultatMot-container */
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #1a1a1a;
-    background-color: #dcce6b;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .sort-button:hover {

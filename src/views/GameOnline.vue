@@ -1,43 +1,102 @@
 <template>
-  <div>
-    <h1>Jeu de Similarité</h1>
+  <div class="gray-box">
+    <h1 class="pseudoGame">Jeu de Similarité</h1>
 
-    <div v-if="!sessionId">
-      <input type="radio" value="collaboration" v-model="gameMode" hidden />
-      <button @click="createSession">Créer une session</button>
-      <input v-model="sessionToJoin" placeholder="Entrez un ID de session" />
-      <button @click="joinSession" :disabled="!sessionToJoin.trim()">Rejoindre</button>
-      <button @click="joinPhoneGame">Rejoindre un joueur sur téléphone</button>
+    <div v-if="!sessionId" class="MotBox">
+      <input
+          type="radio"
+          value="collaboration"
+          v-model="gameMode"
+          hidden
+      />
+      <button class="invite-button" @click="createSession">Créer une session</button>
+      <br>
+      <input
+          v-model="sessionToJoin"
+          placeholder="Entrez un ID de session"
+          class="MotBox"
+      />
+      <button
+          class="sort-button"
+          @click="joinSession"
+          :disabled="!sessionToJoin.trim()"
+      >
+        Rejoindre
+      </button>
+      <br>
+      <button class="invite-button" @click="joinPhoneGame">
+        Rejoindre un joueur sur téléphone
+      </button>
     </div>
 
     <div v-else>
-      <p>ID de session : <strong>{{ sessionId }}</strong></p>
-      <p>Joueurs connectés : {{ connectedPlayers.length }}</p>
-      <p>Mot aléatoire : {{ randomWord }}</p>
-      <p>Nombre total de coups : {{ totalAttempts + similarityResults.length}}</p>
+      <p class="MotBox">
+        ID de session : <strong>{{ sessionId }}</strong>
+      </p>
+      <p class="MotBox">Joueurs connectés : {{ connectedPlayers.length }}</p>
+      <p class="MotBox">Mot aléatoire : {{ randomWord }}</p>
+      <p class="MotBox">
+        Nombre total de coups : {{ totalAttempts + similarityResults.length }}
+      </p>
       <input
-        v-model="submittedWord"
-        placeholder="Entrez un mot"
-        :disabled="gameEnded || connectedPlayers.length < 2"
+          v-model="submittedWord"
+          placeholder="Entrez un mot"
+          :disabled="gameEnded || connectedPlayers.length < 2"
+          class="MotBox"
       />
-      <button @click="submitWord" :disabled="gameEnded || connectedPlayers.length < 2">Soumettre</button>
-      <button v-if="isPhoneGame" @click="quitGame">Quitter la session</button>
-      <ul>
-        <template v-if="!isPhoneGame">
-          <li v-for="(result, i) in similarityResults" :key="i">
-            <p v-if="result.error !== true">{{ result.word1 }} - {{ result.word2 }} : {{ (result.similarity * 100).toFixed(2) }}°</p>
-            <p v-else>Le mot "{{ result.word1 }}" n'est pas dans le vocabulaire</p>
-          </li>
-        </template>
+      <button
+          class="sort-button"
+          @click="submitWord"
+          :disabled="gameEnded || connectedPlayers.length < 2"
+      >
+        Soumettre
+      </button>
+      <button
+          v-if="isPhoneGame"
+          class="invite-button"
+          @click="quitGame"
+      >
+        Quitter la session
+      </button>
+
+      <ul class="resultatMot-container">
+        <li v-for="(result, i) in similarityResults" :key="i">
+          <p
+              v-if="result.error !== true"
+              class="resultatMot"
+          >
+            {{ result.word1 }} - {{ result.word2 }} : {{ (result.similarity * 100).toFixed(2) }}°
+          </p>
+          <p
+              v-else
+              class="resultatMot errorResult"
+          >
+            Le mot "{{ result.word1 }}" n'est pas dans le vocabulaire
+          </p>
+        </li>
         <li v-for="(player, index) in sortedPlayers" :key="index">
-            <span v-if="player.similarity !== undefined">  {{ player.pseudo }} a soumis "{{ player.word }}" : {{ (player.similarity * 100).toFixed(2)}}°</span>
-            <span v-else style = "color:red">Le mot "{{ player.word }}" n'est pas dans le vocabulaire</span>
+          <span
+              v-if="player.similarity !== undefined"
+              class="resultatMot"
+          >
+            {{ player.pseudo }} a soumis "{{ player.word }}" : {{ (player.similarity * 100).toFixed(2) }}°
+          </span>
+          <span
+              v-else
+              class="resultatMot errorResult"
+              style="color:red"
+          >
+            Le mot "{{ player.word }}" n'est pas dans le vocabulaire
+          </span>
         </li>
       </ul>
-      <p v-if="gameEnded">{{ win }} Le mot à deviner était "{{ randomWord }}" !</p>
+
+      <p v-if="gameEnded" class="pseudoGame">
+        {{ win }} Le mot à deviner était "{{ randomWord }}" !
+      </p>
       <div v-if="gameEnded">
         <router-link to="/home">
-          <button>Retour à l'accueil</button>
+          <button class="invite-button">Retour à l'accueil</button>
         </router-link>
       </div>
     </div>
@@ -660,7 +719,7 @@ const subscribeToCurrentWord = () => {
 };
 </script>
 
-<style>
+<style scoped>
 
 @import '@/assets/css/GameOnline.css';
 

@@ -34,7 +34,7 @@
         ID de session : <strong>{{ sessionId }}</strong>
       </p>
       <p class="MotBox">Joueurs connectés : {{ connectedPlayers.length }}</p>
-      <p class="MotBox">Mot aléatoire : {{ randomWord }}</p>
+      <p class="MotBox" style="display: none">Mot aléatoire : {{ randomWord }}</p>
       <p class="MotBox">
         Nombre total de coups : {{ totalAttempts + similarityResults.length }}
       </p>

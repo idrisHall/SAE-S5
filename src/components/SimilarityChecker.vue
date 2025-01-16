@@ -73,7 +73,7 @@ const checkSimilarity = async () => {
         word1: word,
         word2: props.randomWord,
         similarity: similarityResult.similarity,
-        message: `${word} - ${props.randomWord} : ${(similarityResult.similarity * 100).toFixed(3)}°`,
+        message: `${word} : ${(similarityResult.similarity * 100).toFixed(3)}°`,
         error: false,
       });
     }

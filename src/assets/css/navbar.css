@@ -51,7 +51,7 @@ nav a {
 }
 
 /* Style pour le bouton "Se connecter" */
-nav a.se-connecter {
+.se-connecter {
     background-color: #dcce6b;
     color: black;
     padding: 10px 15px;

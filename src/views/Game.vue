@@ -6,7 +6,7 @@
 
     <!-- Conteneur pour MotBox -->
     <div class="MotBox">
-      <RandomWord @wordGenerated="setRandomWord" />
+      <RandomWord @wordGenerated="setRandomWord" style="display: none"/>
       <SimilarityChecker
           :randomWord="randomWord"
           @resultsUpdated="updateSimilarityResults"

@@ -31,7 +31,7 @@
         ID de session : <strong>{{ sessionId }}</strong>
       </p>
       <p class="MotBox">Joueurs connectés : {{ connectedPlayers.length }}</p>
-      <p class="MotBox" style="display: none">Mot aléatoire : {{ randomWord }}</p>
+      <p class="MotBox" style="display: block">Mot aléatoire : {{ randomWord }}</p>
       <p class="MotBox">Nombre total de coups : {{ totalAttempts }}</p>
       <input
           v-model="submittedWord"

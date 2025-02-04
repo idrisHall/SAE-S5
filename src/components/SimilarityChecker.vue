@@ -29,7 +29,7 @@ const props = defineProps({
   },
 });
 
-const emitted = defineEmits(["resultsUpdated"]);
+const emitted = defineEmits(["resultsUpdated", "endGameUpdated"]); // Ajout de "endGameUpdated"
 
 const submittedWord = ref("");
 const similarityResults = ref([]);
@@ -59,6 +59,7 @@ const checkSimilarity = async () => {
 
     if (identicalResult.identical) {
       endGame.value = true; // La partie se termine si les mots sont identiques
+      emitted("endGameUpdated", true);
       similarityResults.value.push({
         word1: word,
         word2: props.randomWord,
@@ -134,68 +135,6 @@ const saveGameResult = async () => {
     console.error("Erreur lors de la vérification ou de la sauvegarde :", error);
   }
 };
-
-const showDefinition = async (word) => {
-  if (!endGame.value) {
-    return;
-  }
-  if (!word) {
-    alert("Veuillez entrer un mot valide.");
-    return;
-  }
-
-  try {
-    // Appel à l'API Node.js
-    const response = await axios.post('http://localhost:3000/api/definition', { word });
-
-    const data = response.data;
-
-    if (data.error) {
-      alert(`Erreur : ${data.error}`);
-      return;
-    }
-
-    // Construction de la définition
-    let definitionMessage = `Définition de "${data.motWiki}":\n\n`;
-
-    if (data.natureDef && data.natureDef.length > 0) {
-      data.natureDef.forEach((nature, index) => {
-        definitionMessage += `Classe grammaticale ${index + 1}: ${data.nature[index] || "Non spécifiée"}\n`;
-
-        nature.forEach((definitions, defIndex) => {
-          if (Array.isArray(definitions)) {
-            definitions.forEach((subDef, subDefIndex) => {
-              definitionMessage += `  ${index + 1}.${subDefIndex + 1}: ${
-                  typeof subDef === "object" ? JSON.stringify(subDef, null, 2) : subDef
-              }\n`;
-            });
-          } else {
-            definitionMessage += `  ${index + 1}.${defIndex + 1}: ${
-                typeof definitions === "object" ? JSON.stringify(definitions, null, 2) : definitions
-            }\n`;
-          }
-        });
-      });
-    } else {
-      definitionMessage += "Définition indisponible.";
-    }
-
-    // Limite pour éviter une alerte trop longue
-    if (definitionMessage.length > 2000) {
-      console.warn("Le message est trop long pour être affiché dans une alerte.");
-      alert("Le contenu est trop long pour être affiché en entier. Veuillez consulter la console pour plus de détails.");
-      console.log(definitionMessage);
-    } else {
-      alert(definitionMessage);
-    }
-  } catch (error) {
-    console.error("Erreur lors de la récupération de la définition :", error);
-    alert("Une erreur s'est produite. Veuillez réessayer.");
-  }
-};
-
-
-
 
 
 </script>

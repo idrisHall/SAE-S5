@@ -21,6 +21,7 @@ export async function checkWordSimilarity(word1, word2) {
 }
 
 export async function checkWordIdentical(word1, word2) {
+  
   const response = await axios.get("http://127.0.0.1:8000/api/word_identical", {
     params: { word1, word2 },
     headers: { "Accept": "application/json" }

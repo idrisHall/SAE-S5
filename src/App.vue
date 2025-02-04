@@ -26,7 +26,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { auth } from '@/firebase.js';
+import { authMobile } from '@/firebaseMobile.js';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import router from '@/router';
 
@@ -34,14 +34,14 @@ const isLoggedIn = ref(false);
 
 // Surveiller les changements d'état de connexion
 onMounted(() => {
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(authMobile, (user) => {
     isLoggedIn.value = !!user; // Met à jour isLoggedIn en fonction de l'état de connexion
   });
 });
 
 // Gestion de la déconnexion
 const handleSingOut = () => {
-  signOut(auth).then(() => {
+  signOut(authMobile).then(() => {
     router.push("/"); // Redirige vers la page d'accueil après déconnexion
   }).catch((error) => {
     console.error("Erreur lors de la déconnexion :", error);

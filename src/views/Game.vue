@@ -49,7 +49,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { auth, database, ref as firebaseRef, get } from "@/firebase";
+import {authMobile} from "@/firebaseMobile"
+import {database, ref as firebaseRef, get } from "@/firebase";
 import RandomWord from "@/components/RandomWordPourMinuit.vue";
 import SimilarityChecker from "@/components/SimilarityChecker.vue";
 
@@ -66,7 +67,7 @@ const setRandomWord = (word) => {
 };
 
 const fetchPseudoAndEmail = async () => {
-  const user = auth.currentUser;
+  const user = authMobile.currentUser;
   if (user) {
     isConnected.value = true;
     email.value = user.email;

@@ -39,7 +39,8 @@
 <script setup>
 import { ref as vueRef } from "vue";
 import { useRouter } from "vue-router";
-import { auth, database, ref, set } from "@/firebase";
+import {authMobile} from "@/firebaseMobile"
+import { database, ref, set } from "@/firebase";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const email = vueRef("");
@@ -49,7 +50,7 @@ const router = useRouter();
 
 const register = (event) => {
   event.preventDefault();
-  createUserWithEmailAndPassword(auth, email.value, password.value)
+  createUserWithEmailAndPassword(authMobile, email.value, password.value)
     .then((data) => {
       const user = data.user;
       const userRef = ref(database, `users/${user.uid}`);
@@ -67,7 +68,7 @@ const register = (event) => {
 
 const signInWithGoogle = () => {
   const provider = new GoogleAuthProvider();
-  signInWithPopup(auth, provider)
+  signInWithPopup(authMobile, provider)
     .then((result) => {
       const user = result.user;
       const userRef = ref(database, `users/${user.uid}`);

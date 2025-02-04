@@ -1,5 +1,7 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+import { onAuthStateChanged } from "firebase/auth";
 import { createRouter, createWebHistory } from "vue-router";
+import {authMobile} from "@/firebaseMobile"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -30,7 +32,7 @@ const router = createRouter({
 const getCurrentUser = () => {
     return new Promise((resolve, reject) => {
         const removeListener = onAuthStateChanged(
-            getAuth(),
+            authMobile,
             (user) => {
                 removeListener();
                 resolve(user);

@@ -35,7 +35,8 @@
 <script setup>
 import { ref as vueRef } from "vue";
 import { useRouter } from "vue-router";
-import { auth, database, ref, set, get } from "@/firebase";
+import { authMobile} from "@/firebaseMobile"
+import { database, ref, set, get } from "@/firebase";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const email = vueRef("");
@@ -57,7 +58,7 @@ const register = (event) => {
     errMsg.value = "Veuillez entrer votre mot de passe.";
     return;
   }
-  signInWithEmailAndPassword(auth, email.value, password.value)
+  signInWithEmailAndPassword(authMobile, email.value, password.value)
     .then((data) => {
       console.log("Successfully signed in !");
       router.push("/game");
@@ -74,7 +75,7 @@ const register = (event) => {
 
 const signInWithGoogle = () => {
   const provider = new GoogleAuthProvider();
-  signInWithPopup(auth, provider)
+  signInWithPopup(authMobile, provider)
     .then(async (result) => {
       const user = result.user;
       const userRef = ref(database, `users/${user.uid}`);

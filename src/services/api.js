@@ -1,40 +1,52 @@
 import axios from "axios";
 
 export async function fetchRandomWordAPI() {
-  const response = await axios.get("http://127.0.0.1:8000/api/random_word");
-  return response.data.random_word;
+  const response = await axios.get(import.meta.env.VITE_API_RANDOM_WORD);
+  return response.data.word;
 }
 
 export async function checkWordSimilarity(word1, word2) {
-  const response = await axios.get("http://127.0.0.1:8000/api/word_similarity", {
-    params: { word1, word2 },
-    headers: { "Accept": "application/json" }
-  });
-  if (response.data && response.data.similarity !== undefined) {
-    return {
-      word1: response.data.word1,
-      word2: response.data.word2,
-      similarity: response.data.similarity
-    };
+  try {
+    const response = await axios.post(
+      import.meta.env.VITE_API_SIMILARITY,
+      { word1, word2 },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }
+      }
+    );
+
+    if (response.data && response.data.similarity !== undefined) {
+      return {
+        word1: word1,
+        word2: word2,
+        similarity: response.data.similarity
+      };
+    }
+    throw new Error("Aucune similarité trouvée.");
+  } catch (error) {
+    console.error("Erreur lors de la requête POST :", error);
+    throw new Error("Erreur lors de la récupération de la similarité.");
   }
-  throw new Error("Aucune similarité trouvée.");
 }
 
 export async function checkWordIdentical(word1, word2) {
-  
-  const response = await axios.get("http://127.0.0.1:8000/api/word_identical", {
-    params: { word1, word2 },
-    headers: { "Accept": "application/json" }
-  });
-  
-  if (response.data) {
+  try {
+    const similarityResult = await checkWordSimilarity(word1, word2);
+
+    const identical = Math.round(similarityResult.similarity, 2) === 1.0;
+    
     return {
-      word1: response.data.word1,
-      word2: response.data.word2,
-      identical: response.data.identical,
-      reason: response.data.reason || null
+      word1,
+      word2,
+      identical,
+      reason: identical ? "Les mots sont strictement identiques." : "Les mots ne sont pas strictement identiques."
     };
+    console.log("identical ? ", identical )
+  } catch (error) {
+    console.error("Erreur lors de la vérification de l'identité :", error);
+    throw new Error("Erreur lors de la récupération de l'identité des mots.");
   }
-  
-  throw new Error("Erreur lors de la vérification de l'identité des mots.");
 }

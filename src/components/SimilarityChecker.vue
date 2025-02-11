@@ -6,21 +6,13 @@
     </div>
     <p style="margin-top: -18.5%; margin-left: 63%">Nombre de tentatives : {{ attemptsCount }}</p>
 
-
     <p v-if="endGame" class="success">Vous avez gagné !</p>
   </div>
-
-  <div class="right-section">
-
-  </div>
-
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { checkWordSimilarity, checkWordIdentical } from "@/services/api";
-import { auth, database, ref as firebaseRef, set, get } from "@/firebase";
-import axios from "axios";
 
 const props = defineProps({
   randomWord: {
@@ -29,7 +21,7 @@ const props = defineProps({
   },
 });
 
-const emitted = defineEmits(["resultsUpdated", "endGameUpdated"]); // Ajout de "endGameUpdated"
+const emit = defineEmits(["resultsUpdated", "endGameUpdated"]);
 
 const submittedWord = ref("");
 const similarityResults = ref([]);
@@ -42,9 +34,8 @@ const checkSimilarity = async () => {
 
   if (!word) return;
 
-  // Empêcher les doublons dans similarityResults
   if (similarityResults.value.some((result) => result.word1 === word)) {
-    submittedWord.value = ""; // Réinitialiser le champ d'entrée
+    submittedWord.value = "";
     return;
   }
 
@@ -54,20 +45,18 @@ const checkSimilarity = async () => {
   }
 
   try {
-    // Vérifier si le mot est identique au mot aléatoire
     const identicalResult = await checkWordIdentical(word, props.randomWord.toLowerCase());
 
     if (identicalResult.identical) {
-      endGame.value = true; // La partie se termine si les mots sont identiques
-      emitted("endGameUpdated", true);
+      endGame.value = true;
+      emit("endGameUpdated", true);
       similarityResults.value.push({
         word1: word,
         word2: props.randomWord,
         similarity: 1,
-        message: `Vous avez trouvé le mot ${props.randomWord} du jour en ${attemptsCount.value} coups ! Cliquez sur les mots pour voir leur définition. `,
+        message: `Vous avez trouvé le mot ${props.randomWord} du jour en ${attemptsCount.value} coups ! Cliquez sur les mots pour voir leur définition.`,
         error: false,
       });
-      saveGameResult();
     } else {
       const similarityResult = await checkWordSimilarity(word, props.randomWord.toLowerCase());
       similarityResults.value.push({
@@ -88,14 +77,12 @@ const checkSimilarity = async () => {
     });
   } finally {
     submittedWord.value = "";
-
-    // Émettre les résultats mis à jour à Game.vue
-    emitted("resultsUpdated", similarityResults.value);
+    emit("resultsUpdated", similarityResults.value);
   }
 };
 
 // Fonction pour sauvegarder le résultat du jeu dans Firebase
-const saveGameResult = async () => {
+/*const saveGameResult = async () => {
   const user = auth.currentUser;
 
   if (!user) {
@@ -134,20 +121,15 @@ const saveGameResult = async () => {
   } catch (error) {
     console.error("Erreur lors de la vérification ou de la sauvegarde :", error);
   }
-};
-
-
+};*/
 </script>
-
 
 <style scoped>
 @import '@/assets/css/similarityChecker.css';
-
 .success {
   color: green;
   font-weight: bold;
 }
-
-
-
 </style>
+
+

@@ -2,25 +2,10 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const { initializeApp } = require("firebase/app");
-const { getDatabase, ref, get } = require("firebase/database");
 const axios = require("axios");
 const { v4: uuidv4 } = require("uuid");
 const { JSDOM } = require("jsdom");
 const bodyParser = require("body-parser");
-
-const firebaseConfig = {
-  apiKey: "AIzaSyChPyyxmMkDOrc0yd8bNY4lBYH07Rqm2K4",
-  authDomain: "approximot-test.firebaseapp.com",
-  projectId: "approximot-test",
-  databaseURL: "https://approximot-test-default-rtdb.europe-west1.firebasedatabase.app/",
-  storageBucket: "approximot-test.firebasestorage.app",
-  messagingSenderId: "289911245716",
-  appId: "1:289911245716:web:c977d1e0aa6e8830699d81",
-};
-
-const firebaseApp = initializeApp(firebaseConfig);
-const database = getDatabase(firebaseApp);
 
 const app = express();
 const server = http.createServer(app);
@@ -45,32 +30,33 @@ const io = new Server(server, {
 const sessions = new Map();
 
 async function fetchRandomWord() {
-  const dbRef = ref(database, "word/randomWord");
-  try {
-    const snapshot = await get(dbRef);
-    if (snapshot.exists()) {
-      return snapshot.val().word;
-    } else {
-      throw new Error("Mot aléatoire introuvable dans Firebase");
-    }
-  } catch {
-    return "mot_inconnu";
-  }
-}
-
-async function fetchRandomWordAPI() {
-  const response = await axios.get("http://127.0.0.1:8000/api/random_word", {
+  const response = await axios.get("https://approximot-1967d63b9545.herokuapp.com/current-word", {
     headers: { Accept: "application/json" },
   });
-  return response.data.random_word;
+  return response.data.word;
 }
 
 async function calculateSimilarity(word1, word2) {
-  const response = await axios.get("http://127.0.0.1:8000/api/word_similarity", {
-    params: { word1, word2 },
-    headers: { Accept: "application/json" },
-  });
-  return response.data;
+  try {
+    const response = await axios.post(
+      "https://approximot-1967d63b9545.herokuapp.com/similarity", 
+      { word1, word2 },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }
+      }
+    );
+
+    if (response.data && response.data.similarity !== undefined) {
+      return response.data
+    }
+    throw new Error("Aucune similarité trouvée.");
+  } catch (error) {
+    console.error("Erreur lors de la requête POST :", error);
+    throw new Error("Erreur lors de la récupération de la similarité.");
+  }
 }
 
 async function checkWordIdentical(word1, word2) {

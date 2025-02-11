@@ -6,17 +6,16 @@
 
     <!-- Conteneur pour MotBox -->
     <div class="MotBox">
-      <RandomWord @wordGenerated="setRandomWord" style="display: block"/>
       <SimilarityChecker
           :randomWord="randomWord"
           @resultsUpdated="updateSimilarityResults"
           @endGameUpdated="updateEndGame"
-
       />
       <br />
-
     </div>
 
+    <!-- Affichage du mot aléatoire -->
+    <p class="mot-du-jour">Mot du jour : <strong>{{ randomWord }}</strong></p>
 
     <!-- Conteneur pour les résultats -->
     <div class="resultatMot-container">
@@ -44,39 +43,32 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import {authMobile} from "@/firebaseMobile"
-import {database, ref as firebaseRef, get } from "@/firebase";
-import RandomWord from "@/components/RandomWordPourMinuit.vue";
+import { authMobile, firestoreMobile } from "@/firebaseMobile";
+import { doc, getDoc } from "firebase/firestore";
 import SimilarityChecker from "@/components/SimilarityChecker.vue";
-import axios from "axios";
+import { fetchRandomWordAPI } from "@/services/api"; // Importer la fonction pour récupérer le mot aléatoire
 
-const randomWord = ref("");
+const randomWord = ref(""); // Stocker le mot du jour
 const pseudo = ref("");
 const email = ref("");
 const isConnected = ref(false);
 const similarityResults = ref([]); // Stocker les résultats ici
-const endGame = ref(false);
 
 const router = useRouter();
-
-const setRandomWord = (word) => {
-  randomWord.value = word;
-};
 
 const fetchPseudoAndEmail = async () => {
   const user = authMobile.currentUser;
   if (user) {
     isConnected.value = true;
     email.value = user.email;
-    const userRef = firebaseRef(database, `users/${user.uid}`);
+    const userDocRef = doc(firestoreMobile, "users", user.uid);
     try {
-      const snapshot = await get(userRef);
-      if (snapshot.exists()) {
-        pseudo.value = snapshot.val().pseudo || "";
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        pseudo.value = userDoc.data().displayName || "";
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des informations utilisateur :", error);
@@ -84,14 +76,18 @@ const fetchPseudoAndEmail = async () => {
   }
 };
 
+const fetchRandomWord = async () => {
+  try {
+    randomWord.value = await fetchRandomWordAPI(); // Récupérer le mot du jour
+    console.log("Mot du jour récupéré :", randomWord.value);
+  } catch (error) {
+    console.error("Erreur lors de la récupération du mot aléatoire :", error);
+  }
+};
+
 const updateSimilarityResults = (results) => {
   similarityResults.value = results;
   console.log("Tableau des résultats de similarité :", similarityResults.value);
-};
-
-const updateEndGame = (newEndGameValue) => {
-  endGame.value = newEndGameValue;
-  console.log("Mise à jour de endGame dans Game.vue :", endGame.value);
 };
 
 const playWithFriend = () => {
@@ -101,6 +97,11 @@ const playWithFriend = () => {
     query: { results: JSON.stringify(similarityResults.value) },
   });
 };
+
+onMounted(() => {
+  fetchPseudoAndEmail();
+  fetchRandomWord(); // Charger le mot aléatoire au montage du composant
+});
 
 const showDefinition = async (word) => {
   if (!endGame.value) {
@@ -160,12 +161,18 @@ const showDefinition = async (word) => {
     alert("Une erreur s'est produite. Veuillez réessayer.");
   }
 };
-
-onMounted(() => {
-  fetchPseudoAndEmail();
-});
 </script>
 
 <style scoped>
 @import '@/assets/css/Game.css';
+
+.mot-du-jour {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
 </style>
+
+
+

@@ -131,7 +131,7 @@ onMounted(() => {
     console.log('Aucune donnée reçue.');
   }
 });
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 // Références pour l'état du jeu
 const sessionId = ref("");
@@ -156,25 +156,26 @@ const gameSession = ref(null);
 const congratulatoryMessageShown = ref(false);
 const wordFoundMessageShown = ref(false);
 
-// Récupération du pseudo utilisateur depuis Firebase
+
+
 const fetchPseudo = async () => {
-  const user = auth.currentUser;
+  const user = authMobile.currentUser;
   if (user) {
-    const userRef = firebaseRef(database, `users/${user.uid}`);
+    const userDocRef = doc(firestoreMobile, "users", user.uid);
     try {
-      const snapshot = await get(userRef);
-      if (snapshot.exists()) {
-        userPseudo.value = snapshot.val().pseudo;
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        userPseudo.value = userDoc.data().displayName || "";
         userId.value = user.uid;
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération du pseudo :", error);
+      console.error("Erreur lors de la récupération des informations utilisateur :", error);
     }
   }
 };
 
 const fetchPseudoMobile = async () => {
-  const user = auth.currentUser;
+  const user = authMobile.currentUser;
   if (user) {
     userPseudo.value = user.uid.substring(0, 4);
     userId.value = user.uid;
@@ -191,7 +192,7 @@ onMounted(() => {
 
 const registerUser = async () => {
   if (!userId.value) {
-    userId.value = auth.currentUser.uid;
+    userId.value = authMobile.currentUser.uid;
     return;
   }
 
@@ -202,9 +203,9 @@ const registerUser = async () => {
   const userData = {
     activeGame: null,
     lastSeen: new Date().toISOString(),
-    displayName: userPseudo.value || auth.currentUser.displayName || "User",
-    email: auth.currentUser?.email || "unknown@example.com",
-    photoURL: auth.currentUser?.photoURL || "null",
+    displayName: userPseudo.value || authMobile.currentUser.displayName || "User",
+    email: authMobile.currentUser?.email || "unknown@example.com",
+    photoURL: authMobile.currentUser?.photoURL || "null",
     singlePlayerGuesses: []
   };
 
@@ -285,7 +286,7 @@ const joinPhoneGame = async () => {
   if (gameCode) {
     await registerUser();
 
-    const user = auth.currentUser;
+    const user = authMobile.currentUser;
     if (!user) {
       console.error("User is not signed in.");
       alert("You must be signed in to join a game.");
@@ -457,6 +458,7 @@ onMounted(() => {
   });
 });
 
+/*
 // Fonction pour sauvegarder le résultat du jeu dans Firebase
 const saveGameResult = async () => {
   const user = auth.currentUser;
@@ -483,7 +485,7 @@ const saveGameResult = async () => {
   } catch (error) {
     console.error("Erreur lors de la sauvegarde :", error);
   }
-};
+};*/
 
 // Déconnexion du socket à la fin
 onBeforeUnmount(() => {
@@ -586,7 +588,7 @@ const handleGuess = async (guessWord) => {
     await addGuess(sessionId.value, userId.value, guessResult);
 
     const playerGuess = {
-      pseudo: auth.currentUser.uid.substring(0, 4),
+      pseudo: authMobile.currentUser.uid.substring(0, 4),
       word: cleanedGuess,
       similarity: similarity,
     };

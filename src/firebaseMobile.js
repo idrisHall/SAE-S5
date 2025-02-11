@@ -11,6 +11,7 @@ const firebaseConfigMobile = {
     appId: "1:127797921459:web:a18b22fac10999c44752c6"
 };
 
+
 let firebaseAppMobile;
 if (!firebaseAppMobile) {
     firebaseAppMobile = initializeApp(firebaseConfigMobile, "mobileApp");

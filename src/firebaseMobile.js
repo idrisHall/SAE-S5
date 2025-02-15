@@ -3,13 +3,13 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfigMobile = {
-    apiKey: "AIzaSyDIrl8-LP0_q4wA2HYqJ4otnLumKwDrgqw",
-    authDomain: "approximot-2-0.firebaseapp.com",
-    projectId: "approximot-2-0",
-    storageBucket: "approximot-2-0.firebasestorage.app",
-    messagingSenderId: "127797921459",
-    appId: "1:127797921459:web:a18b22fac10999c44752c6"
-};
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
+  };
 
 
 let firebaseAppMobile;

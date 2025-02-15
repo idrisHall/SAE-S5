@@ -446,7 +446,7 @@ onMounted(() => {
   socket.on("gameEnd", (data) => {
     gameEnded.value = true;
     win.value = `${data.win} (${data.totalAttempts} ${data.totalAttempts > 1 ? "coups" : "coup"} au total !)`;
-    saveGameResult();
+    
   });
 
   socket.on("resetGame", () => {

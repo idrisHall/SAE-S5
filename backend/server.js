@@ -6,31 +6,50 @@ const axios = require("axios");
 const { v4: uuidv4 } = require("uuid");
 const { JSDOM } = require("jsdom");
 const bodyParser = require("body-parser");
+require("dotenv").config();
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+
 
 const app = express();
 const server = http.createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
+app.use(helmet({
+  contentSecurityPolicy: false, 
+  xssFilter: true,
+  frameguard: { action: "deny" },
+  noSniff: true,
+  hidePoweredBy: true
+}));
+
+app.use(bodyParser.json());
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 2000,
+  message: "Trop de requêtes, réessayez plus tard."
+});
+
+app.use("/", limiter);
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.FRONTEND_URL,
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
 
+
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"]
   },
 });
-
 const sessions = new Map();
 
 async function fetchRandomWord() {
-  const response = await axios.get("https://approximot-1967d63b9545.herokuapp.com/current-word", {
+  const response = await axios.get(process.env.API_RANDOM_WORD, {
     headers: { Accept: "application/json" },
   });
   return response.data.word;
@@ -39,7 +58,7 @@ async function fetchRandomWord() {
 async function calculateSimilarity(word1, word2) {
   try {
     const response = await axios.post(
-      "https://approximot-1967d63b9545.herokuapp.com/similarity", 
+      process.env.API_SIMILARITY, 
       { word1, word2 },
       {
         headers: {
@@ -60,7 +79,7 @@ async function calculateSimilarity(word1, word2) {
 }
 
 async function checkWordIdentical(word1, word2) {
-  const response = await axios.get("http://127.0.0.1:8000/api/word_identical", {
+  const response = await axios.get(process.env.API_WORD_IDENTICAL, {
     params: { word1, word2 },
     headers: { Accept: "application/json" },
   });

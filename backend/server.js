@@ -17,7 +17,7 @@ const server = http.createServer(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(helmet({
-  contentSecurityPolicy: false, 
+  contentSecurityPolicy: false, // Désactive CSP si pas nécessaire (à configurer si besoin)
   xssFilter: true,
   frameguard: { action: "deny" },
   noSniff: true,
@@ -78,12 +78,23 @@ async function calculateSimilarity(word1, word2) {
   }
 }
 
+
 async function checkWordIdentical(word1, word2) {
-  const response = await axios.get(process.env.API_WORD_IDENTICAL, {
-    params: { word1, word2 },
-    headers: { Accept: "application/json" },
-  });
-  return response.data;
+  try {
+    const similarityResult = await calculateSimilarity(word1, word2);
+
+    const identical = Math.round(similarityResult.similarity, 2) === 1.0;
+    
+    return {
+      word1,
+      word2,
+      identical,
+      reason: identical ? "Les mots sont strictement identiques." : "Les mots ne sont pas strictement identiques."
+    };
+  } catch (error) {
+    console.error("Erreur lors de la vérification de l'identité :", error);
+    
+  }
 }
 
 function maskWord(word) {
@@ -176,7 +187,6 @@ io.on("connection", (socket) => {
     const randomWord = session.word;
     const identicalData = await checkWordIdentical(submittedWord, randomWord);
     if (!identicalData) {
-      callback({ error: "Erreur lors de la vérification des mots identiques." });
       return;
     }
 

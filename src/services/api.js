@@ -44,7 +44,6 @@ export async function checkWordIdentical(word1, word2) {
       identical,
       reason: identical ? "Les mots sont strictement identiques." : "Les mots ne sont pas strictement identiques."
     };
-    console.log("identical ? ", identical )
   } catch (error) {
     console.error("Erreur lors de la vérification de l'identité :", error);
     throw new Error("Erreur lors de la récupération de l'identité des mots.");

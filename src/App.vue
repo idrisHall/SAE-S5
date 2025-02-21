@@ -7,7 +7,8 @@
       </router-link>
 
       <div class="center-links">
-        <router-link to="/Game">Solo</router-link>
+        <router-link to="/Game">Lexitom</router-link>
+        <router-link to="/wikitom">Wikitom</router-link>
         <router-link to="/collaboration">Jouer avec un ami</router-link>
         <router-link to="/affrontement">Affronter un ami</router-link>
         <!-- Affiche ce lien uniquement si l'utilisateur n'est pas connecté -->

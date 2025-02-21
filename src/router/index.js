@@ -12,6 +12,7 @@ const router = createRouter({
         { path: "/login", component: () => import("../views/Login.vue") },
         { path: "/oldwords", component: () => import("../views/OldWords.vue")},
         {path : "/profil", component : () => import("../views/Profil.vue")},
+        {path : "/wikitom", component : () => import("../views/Wikitom.vue")},
         {
             path: "/collaboration",
             component: () => import("../views/GameOnline.vue"),
